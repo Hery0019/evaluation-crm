@@ -432,4 +432,10 @@ class ClientsController extends Controller
     {
         return Industry::pluck('name', 'id');
     }
+
+    public function import()
+    {
+        return view('clients.import');
+    }
+
 }
