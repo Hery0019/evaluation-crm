@@ -53,7 +53,8 @@ Route::group(['middleware' => ['auth']], function () {
      * Importation csv
      */
     
-    Route::post('/import-csv', 'ImportClientController@import')->name('import.csv');
+    Route::post('/import-csv', 'ImportProjectController@importCsv')->name('import-project.csv');
+    Route::post('/import-csv', 'ImportClientController@importCsv')->name('import-client.csv');
 
     /**
      * Clients
@@ -65,7 +66,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/projectdata/{external_id}', 'ClientsController@projectDataTable')->name('clients.projectDataTable');
         Route::get('/leaddata/{external_id}', 'ClientsController@leadDataTable')->name('clients.leadDataTable');
         Route::get('/invoicedata/{external_id}', 'ClientsController@invoiceDataTable')->name('clients.invoiceDataTable');
-        Route::get('/clients/import', 'ClientsController@import')->name('clients.import');
+        Route::get('/import', 'ClientsController@import')->name('clients.import');
         Route::post('/create/cvrapi', 'ClientsController@cvrapiStart');
         Route::post('/upload/{external_id}', 'DocumentsController@upload')->name('document.upload');
         Route::patch('/updateassign/{external_id}', 'ClientsController@updateAssign');
@@ -128,6 +129,7 @@ Route::group(['middleware' => ['auth']], function () {
      */
     Route::group(['prefix' => 'projects'], function () {
         Route::get('/data', 'ProjectsController@indexData')->name('projects.index.data');
+        Route::get('/import', 'ProjectsController@import')->name('projects.import');
         Route::patch('/updatestatus/{external_id}', 'ProjectsController@updateStatus')->name('project.update.status');
         Route::patch('/updateassign/{external_id}', 'ProjectsController@updateAssign')->name('project.update.assignee');
         Route::post('/updatestatus/{external_id}', 'ProjectsController@updateStatus');

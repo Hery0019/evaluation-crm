@@ -6,9 +6,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\ClientsImport;
+use App\Imports\ProjectsImport;
 
-class ImportClientController extends Controller
+class ImportProjectController extends Controller
 {
     public function importCsv(Request $request)
     {
@@ -22,7 +22,7 @@ class ImportClientController extends Controller
             return back()->with('error', 'Le fichier n\'est pas valide.');
         }
     
-        Excel::import(new ClientsImport, $file);
+        Excel::import(new ProjectsImport, $file);
     
         return back()->with('success', 'Importation réussie !');
     }

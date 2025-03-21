@@ -67,7 +67,7 @@
                                 class="bullet-point"><span></span></i> {{ __('New Client') }}</a>
                     <a href="{{ route('clients.import') }}" id="newClient"
                         class="list-group-item childlist">
-                        <i class="bullet-point"><span></span></i> {{ __('Import Client') }} </a>
+                        <i class="bullet-point"><span></span></i> {{ __('Import Client CSV') }} </a>
 
                 @endif
             </div>
@@ -80,6 +80,8 @@
                 @if(Entrust::can('project-create'))
                     <a href="{{ route('projects.create')}}" id="newProject"  class="list-group-item childlist"> <i
                                 class="bullet-point"><span></span></i> {{ __('New Project') }}</a>
+                    <a href="{{ route('projects.import')}}" id="newProject"  class="list-group-item childlist"> <i
+                        class="bullet-point"><span></span></i> {{ __('Import Project CSV') }}</a>
                 @endif
             </div>
             <a href="#tasks" class="list-group-item" data-toggle="collapse" data-parent="#MainMenu"><i
