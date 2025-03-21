@@ -1,0 +1,5 @@
+CREATE DATABASE daybyday_test
+
+GRANT ALL PRIVILEGES ON *.* TO 'daybyday_test'@'localhost' WITH GRANT OPTION;
+
+FLUSH PRIVILEGES;
