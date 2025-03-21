@@ -65,6 +65,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/projectdata/{external_id}', 'ClientsController@projectDataTable')->name('clients.projectDataTable');
         Route::get('/leaddata/{external_id}', 'ClientsController@leadDataTable')->name('clients.leadDataTable');
         Route::get('/invoicedata/{external_id}', 'ClientsController@invoiceDataTable')->name('clients.invoiceDataTable');
+        Route::get('/clients/import', 'ClientsController@import')->name('clients.import');
         Route::post('/create/cvrapi', 'ClientsController@cvrapiStart');
         Route::post('/upload/{external_id}', 'DocumentsController@upload')->name('document.upload');
         Route::patch('/updateassign/{external_id}', 'ClientsController@updateAssign');
@@ -74,11 +75,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('document/{external_id}', 'DocumentsController@view')->name('document.view');
     Route::get('document/download/{external_id}', 'DocumentsController@download')->name('document.download');
     Route::resource('documents', 'DocumentsController');
-
-    Route::get('/clients/import', function () {
-        return view('clients.import');
-    })->name('clients.import');
-
     
     /**
      * Tasks
