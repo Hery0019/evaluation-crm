@@ -346,4 +346,9 @@ class UsersController extends Controller
             return $value->name != "owner";
         })->sortBy('display_name');
     }
+
+    public function import()
+    {
+        return view('users.import');
+    }
 }

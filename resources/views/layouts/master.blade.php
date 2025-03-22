@@ -108,6 +108,9 @@
                     <a href="{{ route('users.create')}}"
                        class="list-group-item childlist"> <i class="bullet-point"><span></span></i> {{ __('New User') }}
                     </a>
+                    <a href="{{ route('users.import')}}"
+                        class="list-group-item childlist"> <i class="bullet-point"><span></span></i> {{ __('Import User CSV') }}
+                    </a>
                 @endif
             </div>
 

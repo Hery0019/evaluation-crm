@@ -34,6 +34,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/clientdata/{id}', 'UsersController@clientData')->name('users.clientdata');
         Route::get('/users', 'UsersController@users')->name('users.users');
         Route::get('/calendar-users', 'UsersController@calendarUsers')->name('users.calendar');
+        Route::get('/import', 'UsersController@import')->name('users.import');
+
     });
     Route::resource('users', 'UsersController');
 
@@ -57,6 +59,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/projects/import-csv', 'ImportProjectController@importCsv')->name('import-project.csv');
     Route::post('/clients/import-csv', 'ImportClientController@importCsv')->name('import-client.csv');
     Route::post('/tasks/import-csv', 'ImportTaskController@importCsv')->name('import-task.csv');
+    Route::post('/users/import-csv', 'ImportUserController@importCsv')->name('import-user.csv');
 
 
     /**
