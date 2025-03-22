@@ -93,6 +93,8 @@
                 @if(Entrust::can('task-create'))
                     <a href="{{ route('tasks.create')}}" id="newTask" class="list-group-item childlist"> <i
                                 class="bullet-point"><span></span></i> {{ __('New Task') }}</a>
+                    <a href="{{ route('tasks.import')}}" id="newTask" class="list-group-item childlist"> <i
+                                class="bullet-point"><span></span></i> {{ __('Import Task CSV') }}</a>
                 @endif
             </div>
 

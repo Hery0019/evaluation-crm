@@ -22,4 +22,7 @@ importation projects
     php artisan make:import ProjectsImport --model=Project
     php artisan make:controller ImportProjectController
 
+importation tasks
+    php artisan make:import TasksImport --model=Task
+    php artisan make:controller ImportTaskController
 

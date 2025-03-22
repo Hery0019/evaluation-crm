@@ -56,6 +56,8 @@ Route::group(['middleware' => ['auth']], function () {
     
     Route::post('/projects/import-csv', 'ImportProjectController@importCsv')->name('import-project.csv');
     Route::post('/clients/import-csv', 'ImportClientController@importCsv')->name('import-client.csv');
+    Route::post('/tasks/import-csv', 'ImportTaskController@importCsv')->name('import-task.csv');
+
 
     /**
      * Clients
@@ -84,6 +86,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'tasks'], function () {
         Route::get('/data', 'TasksController@anyData')->name('tasks.data');
         Route::patch('/updatestatus/{external_id}', 'TasksController@updateStatus')->name('task.update.status');
+        Route::get('/import', 'TasksController@import')->name('tasks.import');
         Route::patch('/updateassign/{external_id}', 'TasksController@updateAssign')->name('task.update.assignee');
         Route::post('/updatestatus/{external_id}', 'TasksController@updateStatus');
         Route::post('/updateassign/{external_id}', 'TasksController@updateAssign');

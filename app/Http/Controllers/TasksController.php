@@ -346,4 +346,9 @@ class TasksController extends Controller
         Notifynder::readAll(\Auth::id());
         return redirect()->back();
     }
+
+    public function import()
+    {
+        return view('tasks.import');
+    }
 }
