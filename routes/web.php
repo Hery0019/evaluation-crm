@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\ImportClientController;
+use App\Http\Controllers\ImportProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,8 +54,8 @@ Route::group(['middleware' => ['auth']], function () {
      * Importation csv
      */
     
-    Route::post('/import-csv', 'ImportProjectController@importCsv')->name('import-project.csv');
-    Route::post('/import-csv', 'ImportClientController@importCsv')->name('import-client.csv');
+    Route::post('/projects/import-csv', 'ImportProjectController@importCsv')->name('import-project.csv');
+    Route::post('/clients/import-csv', 'ImportClientController@importCsv')->name('import-client.csv');
 
     /**
      * Clients

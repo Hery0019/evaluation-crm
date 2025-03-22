@@ -2,10 +2,12 @@
 
 namespace App\Imports;
 
+use  Ramsey\Uuid\Uuid;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use App\Models\Project;
 use Maatwebsite\Excel\Concerns\ToModel;
 
-class ProjectsImport implements ToModel
+class ProjectsImport implements ToModel, WithHeadingRow
 {
     /**
     * @param array $row
@@ -21,7 +23,6 @@ class ProjectsImport implements ToModel
             'status_id' => $row['status_id'],
             'user_assigned_id' => $row['user_assigned_id'],
             'user_created_id' => $row['user_created_id'],
-            'industry_id' => $row['industry_id'],
             'client_id' => $row['client_id'],
             'deadline' => $row['deadline'],
         ]);
