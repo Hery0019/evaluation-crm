@@ -124,6 +124,9 @@
                     <a href="{{ route('leads.create')}}"
                        class="list-group-item childlist"> <i class="bullet-point"><span></span></i> {{ __('New Lead') }}
                     </a>
+                    <a href="{{ route('leads.import')}}"
+                       class="list-group-item childlist"> <i class="bullet-point"><span></span></i> {{ __('Import Lead CSV') }}
+                    </a>
                 @endif
             </div>
             <a href="#sales" class=" list-group-item" data-toggle="collapse" data-parent="#MainMenu"><i
@@ -183,10 +186,22 @@
                                 class="bullet-point"><span></span></i> {{ __('Integrations') }}</a>
                 </div>
 
+                <form action="{{ route('generate.database') }}" method="GET" class="list-group-item" onsubmit="return confirm('GENERATE ALL DATA ?')">
+                    <button type="submit" class="btn btn-success">Generate All Data</button>
+                </form>
+
+                
+
                 <form action="{{ route('reset.database') }}" class=" list-group-item" method="GET" onsubmit="return confirm('CLEAR ALL DATA ?')">
                     <button type="submit" class="btn btn-danger">Clear all data</button>
                 </form>
-
+                
+                @if(session('success_generate'))
+                    <div class="alert alert-success">
+                        {{ session('success_generate') }}
+                    </div>
+                @endif
+            
                 <!-- Afficher un message de succès -->
                 @if(session('success'))
                     <div class="alert alert-success">

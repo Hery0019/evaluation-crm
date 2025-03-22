@@ -60,6 +60,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/clients/import-csv', 'ImportClientController@importCsv')->name('import-client.csv');
     Route::post('/tasks/import-csv', 'ImportTaskController@importCsv')->name('import-task.csv');
     Route::post('/users/import-csv', 'ImportUserController@importCsv')->name('import-user.csv');
+    Route::post('/leads/import-csv', 'ImportLeadController@importCsv')->name('import-lead.csv');
 
 
     /**
@@ -108,6 +109,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/all-leads-data', 'LeadsController@allLeads')->name('leads.all');
         Route::get('/data', 'LeadsController@leadsJson')->name('leads.data');
         Route::patch('/updateassign/{external_id}', 'LeadsController@updateAssign')->name('lead.update.assignee');
+        Route::get('/import', 'LeadsController@import')->name('leads.import');
         Route::patch('/updatestatus/{external_id}', 'LeadsController@updateStatus')->name('lead.update.status');
         Route::patch('/updatefollowup/{external_id}', 'LeadsController@updateFollowup')->name('lead.followup');
         Route::post('/updateassign/{external_id}', 'LeadsController@updateAssign');
@@ -178,8 +180,16 @@ Route::group(['middleware' => ['auth']], function () {
      */
     Route::get('/reset-database', function () {
         Artisan::call('migrate:fresh --seed');
-        return back()->with('success', 'Base de données réinitialisée avec succès !');
+        return back()->with('success', 'Database reset successfully !');
     })->name('reset.database');
+
+        /**
+     * Generate database
+     */
+    Route::get('/generate-database', function () {
+        Artisan::call('db:seed --class=DummyDatabaseSeeder');
+        return back()->with('success', 'Database generated successfully !');
+    })->name('generate.database');
 
 
     /**

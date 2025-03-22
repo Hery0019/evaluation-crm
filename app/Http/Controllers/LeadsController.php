@@ -232,4 +232,8 @@ class LeadsController extends Controller
     {
         return Lead::whereExternalId($external_id)->firstOrFail();
     }
+    public function import()
+    {
+        return view('leads.import');
+    }
 }

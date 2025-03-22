@@ -1,5 +1,5 @@
 name,email,password,address,primary_number,secondary_number,image_path,language
-Alice Johnson,alice@example.com,password123,123 Main St,1234567890,0987654321,/images/alice.jpg,English
+Alice Johnson,alice@example.com,password123,123 Main St,1234567890,987654321,/images/alice.jpg,English
 Bob Smith,bob@example.com,securepass,456 Oak Ave,2345678901,9876543210,/images/bob.png,French
 Charlie Brown,charlie@example.com,mypassword,789 Pine Rd,3456789012,8765432109,/images/charlie.jpeg,Spanish
 Diana Ross,diana@example.com,diana1234,321 Birch Ln,4567890123,7654321098,/images/diana.png,German

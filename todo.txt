@@ -29,3 +29,7 @@ importation tasks
 importation users
     php artisan make:import UsersImport --model=User
     php artisan make:controller ImportUserController
+
+importation leads
+    php artisan make:import LeadsImport --model=Lead
+    php artisan make:controller ImportLeadController
