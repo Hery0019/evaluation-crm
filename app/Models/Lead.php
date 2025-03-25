@@ -165,4 +165,9 @@ class Lead extends Model implements Commentable
         }
         return true;
     }
+
+    public function payments()
+    {
+        return $this->hasManyThrough(Payment::class, Invoice::class, 'source_id', 'invoice_id');
+    }
 }

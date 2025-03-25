@@ -10,7 +10,9 @@ use App\Services\Invoice\GenerateInvoiceStatus;
 use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Ramsey\Uuid\Uuid;
+use App\Services\Invoice\InvoiceCalculator;
 
 class PaymentsController extends Controller
 {
@@ -52,6 +54,15 @@ class PaymentsController extends Controller
         if (!$invoice->isSent()) {
             session()->flash('flash_message_warning', __("Can't add payment on Invoice"));
             return redirect()->route('invoices.show', $invoice->external_id);
+        }
+        $newPaymentAmount = $request->amount * 100; // Convert to cents
+        $totalPaid = (int) $invoice->payments()->sum('amount');
+        $invoiceTotal = app(InvoiceCalculator::class, ['invoice' => $invoice])->getTotalPrice()->getAmount();
+
+        // Vérifier si le paiement entraînerait un dépassement
+        if (($totalPaid + $newPaymentAmount) > $invoiceTotal) {
+            session()->flash('flash_message_warning', __("Payment exceeds the invoice total and cannot be added."));
+            return redirect()->back();
         }
 
         $payment = Payment::create([

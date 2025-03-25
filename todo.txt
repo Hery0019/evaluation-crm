@@ -33,3 +33,17 @@ importation users
 importation leads
     php artisan make:import LeadsImport --model=Lead
     php artisan make:controller ImportLeadController
+
+
+
+RELIER AVEC JAVA
+    composer require laravel/sanctum
+    php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+    php artisan migrate
+    php artisan make:controller Api/AuthController
+
+SELECT l.*, p.*
+FROM leads l
+LEFT JOIN invoices i ON i.source_id = l.id
+LEFT JOIN payments p ON p.id = i.id
+WHERE MONTH(l.deadline) = 3 AND YEAR(l.deadline) = 2025;

@@ -10,6 +10,7 @@ use App\Models\Task;
 use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Illuminate\Http\JsonResponse;
 use DB;
 
 class PagesController extends Controller
@@ -57,5 +58,67 @@ class PagesController extends Controller
             ->withTotalClients(Client::count())
             ->withSettings(Setting::first())
             ->withAbsencesToday($absences);
+    }
+
+     /**
+     * Dashboard data as JSON
+     * @return JsonResponse
+     */
+    /**
+     * Dashboard data as JSON
+     * @return JsonResponse
+     */
+    public function dashboardJson(): JsonResponse
+    {
+        $today = today();
+        $startDate = today()->subdays(14);
+        $period = CarbonPeriod::create($startDate, $today);
+        $datasheet = [];
+
+        // Iterate over the period
+        foreach ($period as $date) {
+            $datasheet[$date->format(carbonDate())] = [
+                "monthly" => [
+                    "tasks" => 0,
+                    "leads" => 0,
+                ],
+            ];
+        }
+
+        // Count tasks and leads for each date
+        $tasks = Task::whereBetween('created_at', [$startDate, now()])->get();
+        $leads = Lead::whereBetween('created_at', [$startDate, now()])->get();
+
+        foreach ($tasks as $task) {
+            $datasheet[$task->created_at->format(carbonDate())]["monthly"]["tasks"]++;
+        }
+
+        foreach ($leads as $lead) {
+            $datasheet[$lead->created_at->format(carbonDate())]["monthly"]["leads"]++;
+        }
+
+        // Get absences if user has permission
+        $absences = [];
+        if (auth()->check() && auth()->user()->can('absence-view')) {
+            $absences = Absence::with('user')
+                ->groupBy('user_id')
+                ->where('start_at', '>=', today())
+                ->orWhere('end_at', '>', today())
+                ->get();
+        } else {
+            $absences = [];
+        }
+
+        // Return JSON response
+        return response()->json([
+            'users' => User::with(['department'])->get(),
+            'datasheet' => $datasheet,
+            'totalTasks' => Task::count(),
+            'totalLeads' => Lead::count(),
+            'totalProjects' => Project::count(),
+            'totalClients' => Client::count(),
+            'settings' => Setting::first(),
+            'absencesToday' => $absences,
+        ]);
     }
 }

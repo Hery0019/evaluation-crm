@@ -25,6 +25,7 @@
         "laravel/cashier": "^10.2",
         "laravel/framework": "^7.0",
         "laravel/helpers": "^1.1",
+        "laravel/sanctum": "^2.15",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "laravelcollective/html": "6.0.*@dev",
@@ -32,9 +33,11 @@
         "league/flysystem-cached-adapter": "~1.0",
         "maatwebsite/excel": "^3.1",
         "mews/purifier": "^3.1",
+        "namshi/jose": "^7.2",
         "predis/predis": "^1.1",
         "ramsey/uuid": "^3.6",
         "spatie/dropbox-api": "^1.19",
+        "tymon/jwt-auth": "^1.0",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
