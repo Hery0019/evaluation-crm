@@ -80,7 +80,9 @@ class InvoicesController extends Controller
         $totalPrice = $invoiceCalculator->getTotalPrice();
         $subPrice = $invoiceCalculator->getSubTotal();
         $vatPrice = $invoiceCalculator->getVatTotal();
-        $amountDue = $invoiceCalculator->getAmountDue();
+        $amountDue = $invoiceCalculator->getAmountDue(); // mila atao anaty session ito
+
+        session(['amountDue' => $amountDue]);
         
         return view('invoices.show')
             ->withInvoice($invoice)

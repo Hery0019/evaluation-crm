@@ -5,6 +5,7 @@ use App\Models\Offer;
 use App\Models\Invoice;
 use App\Repositories\Tax\Tax;
 use App\Repositories\Money\Money;
+use App\Services\Remise\RemiseService;
 
 class InvoiceCalculator
 {
@@ -41,6 +42,7 @@ class InvoiceCalculator
         foreach ($invoiceLines as $invoiceLine) {
             $price += $invoiceLine->quantity * $invoiceLine->price;
         }
+        $price -= $price * RemiseService::getPourcent() / 100; // application de remise
 
         return new Money($price);
     }

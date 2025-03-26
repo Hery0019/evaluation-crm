@@ -274,4 +274,14 @@ class ProjectsController extends Controller
     {
         return Project::whereExternalId($external_id)->firstOrFail();
     }
+
+    public function import()
+    {
+        return view('projects.import');
+    }
+
+    public function importAll()
+    {
+        return view('projects.importall');
+    }
 }

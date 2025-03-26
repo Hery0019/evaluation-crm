@@ -4,10 +4,10 @@
 
 @section('content')
 <div class="container">
-    <h2>Importer des Clients</h2>
+    <h2>Import some clients</h2>
     
 <div class="col-sm-10">
-    <form action="{{ route('import.csv') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('import-client.csv') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
             {!! Form::label('csv_file', __('Import CSV'). ':', ['class' => 'control-label thin-weight']) !!}
@@ -18,3 +18,4 @@
         </button>
     </form>
 </div>
+@stop

@@ -67,7 +67,7 @@
                                 class="bullet-point"><span></span></i> {{ __('New Client') }}</a>
                     <a href="{{ route('clients.import') }}" id="newClient"
                         class="list-group-item childlist">
-                        <i class="bullet-point"><span></span></i> {{ __('Import Client') }} </a>
+                        <i class="bullet-point"><span></span></i> {{ __('Import Client CSV') }} </a>
 
                 @endif
             </div>
@@ -80,6 +80,8 @@
                 @if(Entrust::can('project-create'))
                     <a href="{{ route('projects.create')}}" id="newProject"  class="list-group-item childlist"> <i
                                 class="bullet-point"><span></span></i> {{ __('New Project') }}</a>
+                    <a href="{{ route('projects.import')}}" id="newProject"  class="list-group-item childlist"> <i
+                        class="bullet-point"><span></span></i> {{ __('Import Project CSV') }}</a>
                 @endif
             </div>
             <a href="#tasks" class="list-group-item" data-toggle="collapse" data-parent="#MainMenu"><i
@@ -91,6 +93,8 @@
                 @if(Entrust::can('task-create'))
                     <a href="{{ route('tasks.create')}}" id="newTask" class="list-group-item childlist"> <i
                                 class="bullet-point"><span></span></i> {{ __('New Task') }}</a>
+                    <a href="{{ route('tasks.import')}}" id="newTask" class="list-group-item childlist"> <i
+                                class="bullet-point"><span></span></i> {{ __('Import Task CSV') }}</a>
                 @endif
             </div>
 
@@ -104,6 +108,9 @@
                     <a href="{{ route('users.create')}}"
                        class="list-group-item childlist"> <i class="bullet-point"><span></span></i> {{ __('New User') }}
                     </a>
+                    <a href="{{ route('users.import')}}"
+                        class="list-group-item childlist"> <i class="bullet-point"><span></span></i> {{ __('Import User CSV') }}
+                    </a>
                 @endif
             </div>
 
@@ -116,6 +123,9 @@
                 @if(Entrust::can('lead-create'))
                     <a href="{{ route('leads.create')}}"
                        class="list-group-item childlist"> <i class="bullet-point"><span></span></i> {{ __('New Lead') }}
+                    </a>
+                    <a href="{{ route('leads.import')}}"
+                       class="list-group-item childlist"> <i class="bullet-point"><span></span></i> {{ __('Import Lead CSV') }}
                     </a>
                 @endif
             </div>
@@ -176,10 +186,24 @@
                                 class="bullet-point"><span></span></i> {{ __('Integrations') }}</a>
                 </div>
 
+                <a class="list-group-item" href="{{ route('projects.importall') }}"> 
+                    <button type="submit" class="btn btn-success">Import All Data</button>
+                </a>
+
+                <form action="{{ route('generate.database') }}" method="GET" class="list-group-item" onsubmit="return confirm('GENERATE ALL DATA ?')">
+                    <button type="submit" class="btn btn-success">Generate All Data</button>
+                </form>               
+
                 <form action="{{ route('reset.database') }}" class=" list-group-item" method="GET" onsubmit="return confirm('CLEAR ALL DATA ?')">
                     <button type="submit" class="btn btn-danger">Clear all data</button>
                 </form>
-
+                
+                @if(session('success_generate'))
+                    <div class="alert alert-success">
+                        {{ session('success_generate') }}
+                    </div>
+                @endif
+            
                 <!-- Afficher un message de succès -->
                 @if(session('success'))
                     <div class="alert alert-success">

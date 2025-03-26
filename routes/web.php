@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\ImportClientController;
+use App\Http\Controllers\ImportProjectController;
+use App\Http\Controllers\DatabaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +35,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/clientdata/{id}', 'UsersController@clientData')->name('users.clientdata');
         Route::get('/users', 'UsersController@users')->name('users.users');
         Route::get('/calendar-users', 'UsersController@calendarUsers')->name('users.calendar');
+        Route::get('/import', 'UsersController@import')->name('users.import');
+
     });
     Route::resource('users', 'UsersController');
 
@@ -53,7 +57,14 @@ Route::group(['middleware' => ['auth']], function () {
      * Importation csv
      */
     
-    Route::post('/import-csv', 'ImportClientController@import')->name('import.csv');
+    Route::post('/projects/import-csv', 'ImportProjectController@importCsv')->name('import-project.csv');
+    Route::post('/clients/import-csv', 'ImportClientController@importCsv')->name('import-client.csv');
+    Route::post('/tasks/import-csv', 'ImportTaskController@importCsv')->name('import-task.csv');
+    Route::post('/users/import-csv', 'ImportUserController@importCsv')->name('import-user.csv');
+    Route::post('/leads/import-csv', 'ImportLeadController@importCsv')->name('import-lead.csv');
+    // Route::post('/import-csv', 'ImportController@importCsv')->name('import.csv');
+    Route::post('/import-csv', 'DatabaseController@import')->name('import.csv');
+
 
     /**
      * Clients
@@ -65,7 +76,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/projectdata/{external_id}', 'ClientsController@projectDataTable')->name('clients.projectDataTable');
         Route::get('/leaddata/{external_id}', 'ClientsController@leadDataTable')->name('clients.leadDataTable');
         Route::get('/invoicedata/{external_id}', 'ClientsController@invoiceDataTable')->name('clients.invoiceDataTable');
-        Route::get('/clients/import', 'ClientsController@import')->name('clients.import');
+        Route::get('/import', 'ClientsController@import')->name('clients.import');
         Route::post('/create/cvrapi', 'ClientsController@cvrapiStart');
         Route::post('/upload/{external_id}', 'DocumentsController@upload')->name('document.upload');
         Route::patch('/updateassign/{external_id}', 'ClientsController@updateAssign');
@@ -82,6 +93,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'tasks'], function () {
         Route::get('/data', 'TasksController@anyData')->name('tasks.data');
         Route::patch('/updatestatus/{external_id}', 'TasksController@updateStatus')->name('task.update.status');
+        Route::get('/import', 'TasksController@import')->name('tasks.import');
         Route::patch('/updateassign/{external_id}', 'TasksController@updateAssign')->name('task.update.assignee');
         Route::post('/updatestatus/{external_id}', 'TasksController@updateStatus');
         Route::post('/updateassign/{external_id}', 'TasksController@updateAssign');
@@ -100,6 +112,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/all-leads-data', 'LeadsController@allLeads')->name('leads.all');
         Route::get('/data', 'LeadsController@leadsJson')->name('leads.data');
         Route::patch('/updateassign/{external_id}', 'LeadsController@updateAssign')->name('lead.update.assignee');
+        Route::get('/import', 'LeadsController@import')->name('leads.import');
         Route::patch('/updatestatus/{external_id}', 'LeadsController@updateStatus')->name('lead.update.status');
         Route::patch('/updatefollowup/{external_id}', 'LeadsController@updateFollowup')->name('lead.followup');
         Route::post('/updateassign/{external_id}', 'LeadsController@updateAssign');
@@ -128,6 +141,8 @@ Route::group(['middleware' => ['auth']], function () {
      */
     Route::group(['prefix' => 'projects'], function () {
         Route::get('/data', 'ProjectsController@indexData')->name('projects.index.data');
+        Route::get('/import', 'ProjectsController@import')->name('projects.import');
+        Route::get('/importall', 'ProjectsController@importAll')->name('projects.importall');
         Route::patch('/updatestatus/{external_id}', 'ProjectsController@updateStatus')->name('project.update.status');
         Route::patch('/updateassign/{external_id}', 'ProjectsController@updateAssign')->name('project.update.assignee');
         Route::post('/updatestatus/{external_id}', 'ProjectsController@updateStatus');
@@ -169,8 +184,16 @@ Route::group(['middleware' => ['auth']], function () {
      */
     Route::get('/reset-database', function () {
         Artisan::call('migrate:fresh --seed');
-        return back()->with('success', 'Base de données réinitialisée avec succès !');
+        return back()->with('success', 'Database reset successfully !');
     })->name('reset.database');
+
+        /**
+     * Generate database
+     */
+    Route::get('/generate-database', function () {
+        Artisan::call('db:seed --class=DummyDatabaseSeeder');
+        return back()->with('success', 'Database generated successfully !');
+    })->name('generate.database');
 
 
     /**
@@ -255,3 +278,4 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/dropbox-token', 'CallbackController@dropbox')->name('dropbox.callback');
     Route::get('/googledrive-token', 'CallbackController@googleDrive')->name('googleDrive.callback');
 });
+

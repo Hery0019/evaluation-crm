@@ -1,0 +1,6 @@
+client_name,lead_title,type,produit,prix,quantite
+Kautzer-VonRueden,mon lead 1,offers,p1,145,50
+Kautzer-VonRueden,mon lead 1,offers,p2,24,30
+Kautzer-VonRueden,mon lead 2,invoice,p1,145,90
+Kautzer-VonRueden,mon lead 2,invoice,p3,30,1000
+Kautzer-VonRueden,mon lead 2,invoice,p2,34,900

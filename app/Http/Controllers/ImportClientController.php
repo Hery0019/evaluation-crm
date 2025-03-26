@@ -12,11 +12,19 @@ class ImportClientController extends Controller
 {
     public function importCsv(Request $request)
     {
-        $request->validate([
-            'csv_file' => 'required|mimes:csv',
-        ]);
-
-        Excel::import(new ClientsImport, request()->file('file'), null, \Maatwebsite\Excel\Excel::CSV);
+        if (!$request->hasFile('csv_file')) {
+            return back()->with('error', 'Aucun fichier n\'a été sélectionné.');
+        }
+    
+        $file = $request->file('csv_file');
+    
+        if (!$file->isValid()) {
+            return back()->with('error', 'Le fichier n\'est pas valide.');
+        }
+    
+        Excel::import(new ClientsImport, $file);
+    
         return back()->with('success', 'Importation réussie !');
     }
+    
 }

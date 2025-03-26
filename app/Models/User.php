@@ -8,15 +8,16 @@ use App\Models\Client;
 use App\Zizaco\Entrust\Traits\EntrustUserTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Setting;
-use App\Api\v1\Models\Token;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Sanctum\HasApiTokens;
 use Laravel\Cashier\Billable;
 use Carbon\Carbon;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class User extends Authenticatable
 {
-    use Notifiable, EntrustUserTrait,  SoftDeletes, Billable;
+    use HasApiTokens, Notifiable, EntrustUserTrait,  SoftDeletes, Billable;
 
     public function restore()
     {
@@ -93,9 +94,13 @@ class User extends Authenticatable
         return $this->hasMany(Absence::class);
     }
 
+    // public function tokens()
+    // {
+    //     return $this->hasMany(Token::class, 'user_id', 'id');
+    // }
     public function tokens()
     {
-        return $this->hasMany(Token::class, 'user_id', 'id');
+        return $this->hasMany(PersonalAccessToken::class);
     }
 
     public function canChangePasswordOn(User $user)
