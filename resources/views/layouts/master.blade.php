@@ -186,11 +186,13 @@
                                 class="bullet-point"><span></span></i> {{ __('Integrations') }}</a>
                 </div>
 
+                <a class="list-group-item" href="{{ route('projects.importall') }}"> 
+                    <button type="submit" class="btn btn-success">Import All Data</button>
+                </a>
+
                 <form action="{{ route('generate.database') }}" method="GET" class="list-group-item" onsubmit="return confirm('GENERATE ALL DATA ?')">
                     <button type="submit" class="btn btn-success">Generate All Data</button>
-                </form>
-
-                
+                </form>               
 
                 <form action="{{ route('reset.database') }}" class=" list-group-item" method="GET" onsubmit="return confirm('CLEAR ALL DATA ?')">
                     <button type="submit" class="btn btn-danger">Clear all data</button>

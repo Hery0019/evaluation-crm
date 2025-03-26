@@ -1,0 +1,121 @@
+$leadsFile = $request->file('leads_file');
+            $leadsPath = $leadsFile->getRealPath();
+            $leadsData = array_map('str_getcsv', file($leadsPath));
+            array_shift($leadsData); // Enlever l'en-tête
+
+            $leadsImported = 0;
+            $currentLead = null;
+            $currentInvoice = null;
+            $currentOffer = null;
+
+            // Récupérer tous les produits uniques du CSV
+            $uniqueProducts = [];
+            foreach ($leadsData as $row) {
+                if (!empty($row[3])) {
+                    $productName = $row[3];
+                    $productPrice = $row[4] * 100; // Convertir en centimes
+
+                    if (!isset($uniqueProducts[$productName])) {
+                        // Chercher le produit existant
+                        $product = \App\Models\Product::where('name', $productName)->first();
+                        
+                        if ($product) {
+                            // Si le produit existe et le prix est différent, mettre à jour le prix
+                            if ($product->price != $productPrice) {
+                                $product->price = $productPrice;
+                                $product->save();
+                            }
+                            $uniqueProducts[$productName] = $product;
+                        } else {
+                            // Créer un nouveau produit avec le prix du CSV
+                            $uniqueProducts[$productName] = \App\Models\Product::create([
+                                'name' => $productName,
+                                'external_id' => uniqid('PROD_'),
+                                'number' => $productName,
+                                'default_type' => 'pieces',
+                                'archived' => false,
+                                'price' => $productPrice
+                            ]);
+                        }
+                    }
+                }
+            }
+
+            foreach ($leadsData as $index => $row) {
+                try {
+                    // Trouver le client
+                    $client = \App\Models\Client::where('company_name', $row[0])->first();
+                    
+                    if (!$client) {
+                        throw new \Exception("Client non trouvé: " . $row[0]);
+                    }
+
+                    // Si c'est un nouveau lead
+                    if (!$currentLead || $currentLead->title !== $row[1]) {
+                        // Créer le lead
+                        $currentLead = \App\Models\Lead::create([
+                            'title' => $row[1],
+                            'client_id' => $client->id,
+                            'status_id' => 1,
+                            'user_created_id' => auth()->id(),
+                            'user_assigned_id' => auth()->id(),
+                            'external_id' => uniqid('LEAD_'),
+                            'description' => $faker->sentence(),
+                            'deadline' => $faker->dateTimeBetween('now', '+3 months')
+                        ]);
+
+                        $leadsImported++;
+                    }
+
+                    // Créer une nouvelle offre pour chaque ligne
+                    $currentOffer = \App\Models\Offer::create([
+                        'client_id' => $client->id,
+                        'external_id' => uniqid('OFFER_'),
+                        'status' => 'draft',
+                        'source_type' => \App\Models\Lead::class,
+                        'source_id' => $currentLead->id
+                    ]);
+
+                    // Si c'est une facture, créer l'invoice
+                    if ($row[2] === 'invoice') {
+                        $currentInvoice = \App\Models\Invoice::create([
+                            'client_id' => $client->id,
+                            'external_id' => uniqid('INV_'),
+                            'status' => 'draft',
+                            'source_type' => \App\Models\Lead::class,
+                            'source_id' => $currentLead->id,
+                            'offer_id' => $currentOffer->id
+                        ]);
+                    }
+
+                    // Récupérer le produit correspondant
+                    $product = $uniqueProducts[$row[3]] ?? null;
+                    if (!$product) {
+                        throw new \Exception("Produit non trouvé: " . $row[3]);
+                    }
+
+                    // Créer la ligne pour l'offre
+                    \App\Models\InvoiceLine::create([
+                        'external_id' => (string) \Illuminate\Support\Str::uuid(),
+                        'title' => $row[3],
+                        'price' => $row[4] * 100,
+                        'quantity' => $row[5],
+                        'type' => 'pieces',
+                        'product_id' => $product->id,
+                        'invoice_id' => null,
+                        'offer_id' => $currentOffer->id
+                    ]);
+
+                    // Si c'est une facture, créer la ligne pour la facture
+                    if ($row[2] === 'invoice') {
+                        \App\Models\InvoiceLine::create([
+                            'external_id' => (string) \Illuminate\Support\Str::uuid(),
+                            'title' => $row[3],
+                            'price' => $row[4] * 100,
+                            'quantity' => $row[5],
+                            'type' => 'pieces',
+                            'product_id' => $product->id,
+                            'invoice_id' => $currentInvoice->id,
+                            'offer_id' => null
+                        ]);
+                    }

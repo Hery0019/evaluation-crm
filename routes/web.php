@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\ImportClientController;
 use App\Http\Controllers\ImportProjectController;
+use App\Http\Controllers\DatabaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +62,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/tasks/import-csv', 'ImportTaskController@importCsv')->name('import-task.csv');
     Route::post('/users/import-csv', 'ImportUserController@importCsv')->name('import-user.csv');
     Route::post('/leads/import-csv', 'ImportLeadController@importCsv')->name('import-lead.csv');
+    // Route::post('/import-csv', 'ImportController@importCsv')->name('import.csv');
+    Route::post('/import-csv', 'DatabaseController@import')->name('import.csv');
 
 
     /**
@@ -139,6 +142,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'projects'], function () {
         Route::get('/data', 'ProjectsController@indexData')->name('projects.index.data');
         Route::get('/import', 'ProjectsController@import')->name('projects.import');
+        Route::get('/importall', 'ProjectsController@importAll')->name('projects.importall');
         Route::patch('/updatestatus/{external_id}', 'ProjectsController@updateStatus')->name('project.update.status');
         Route::patch('/updateassign/{external_id}', 'ProjectsController@updateAssign')->name('project.update.assignee');
         Route::post('/updatestatus/{external_id}', 'ProjectsController@updateStatus');
@@ -274,3 +278,4 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/dropbox-token', 'CallbackController@dropbox')->name('dropbox.callback');
     Route::get('/googledrive-token', 'CallbackController@googleDrive')->name('googleDrive.callback');
 });
+

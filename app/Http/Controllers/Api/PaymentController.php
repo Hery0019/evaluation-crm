@@ -9,6 +9,20 @@ use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
+    // Récupérer un paiement par son ID
+    public function getPaymentById($id)
+    {
+        // Recherche du paiement dans la base de données
+        $payment = DB::table('payments')->find($id);
+
+        // Vérifie si le paiement existe
+        if (!$payment) {
+            return response()->json(['message' => 'Paiement introuvable'], 404);
+        }
+
+        return response()->json($payment);
+    }
+
     // Supprimer un paiement
     public function deletePayment($id)
     {

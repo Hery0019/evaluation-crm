@@ -24,6 +24,5 @@ class ImportProjectController extends Controller
         Excel::import(new ProjectsImport, $file);
     
         return back()->with('success', 'Importation réussie !');
-    }
-    
+    } 
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\PagesController;
 use  App\Http\Controllers\Api\GraphController;
 use App\Http\Controllers\Api\LeadController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\RemiseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +32,11 @@ Route::get('/graph-data', [GraphController::class, 'getGraphData']);
 
 Route::get('/leads/{month}/{year}', [LeadController::class, 'getLeadsByMonthAndYear']);
 // Route::get('/leads/{month}', [LeadController::class, 'getLeadsByMonth']);
-Route::delete('/payments/{id}', [PaymentController::class, 'deletePayment']);
-Route::put('/payments/{id}', [PaymentController::class, 'updatePayment']);
+Route::delete('/payments/delete/{id}', [PaymentController::class, 'deletePayment']);
+Route::put('/payments/update/{id}', [PaymentController::class, 'updatePayment']);
+Route::get('/payments/{id}', [PaymentController::class, 'getPaymentById']);
+
+Route::put('/updateRemise', [RemiseController::class, 'updatePourcent']);
 
 
 

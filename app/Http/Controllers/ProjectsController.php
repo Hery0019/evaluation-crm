@@ -279,4 +279,9 @@ class ProjectsController extends Controller
     {
         return view('projects.import');
     }
+
+    public function importAll()
+    {
+        return view('projects.importall');
+    }
 }

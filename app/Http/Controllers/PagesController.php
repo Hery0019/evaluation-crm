@@ -64,10 +64,6 @@ class PagesController extends Controller
      * Dashboard data as JSON
      * @return JsonResponse
      */
-    /**
-     * Dashboard data as JSON
-     * @return JsonResponse
-     */
     public function dashboardJson(): JsonResponse
     {
         $today = today();
@@ -105,13 +101,14 @@ class PagesController extends Controller
                 ->where('start_at', '>=', today())
                 ->orWhere('end_at', '>', today())
                 ->get();
-        } else {
-            $absences = [];
         }
 
         // Return JSON response
         return response()->json([
             'users' => User::with(['department'])->get(),
+            'leads' => Lead::all(), // Ajout de la liste des leads
+            'tasks' => Task::all(), // Ajout de la liste des tasks
+            'projects' => Project::all(), // Ajout de la liste des projects
             'datasheet' => $datasheet,
             'totalTasks' => Task::count(),
             'totalLeads' => Lead::count(),
